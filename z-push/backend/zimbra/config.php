@@ -7,6 +7,7 @@
 * Created     :   21.03.2016
 * Modified    :   15.12.2016 - Added ZIMBRA_SSL_VERIFYHOST & ZIMBRA_SSL_VERIFYPEER
 *                 07.10.2017 - Added ZIMBRA_DISABLE_BIRTHDAY_SYNC
+*                 16.04.2121 - Added ZIMBRA_DETELESASMOVES
 *
 * Copyright   :   Vincent Sherwood
 ************************************************/
@@ -28,9 +29,9 @@
     // To configure the ZimbraBackend uncomment the appropriate line below and customize as
     // required.
 //    define('ZIMBRA_URL', 'http://zimbraServerName');
-      define('ZIMBRA_URL', 'https://localhost');
+//    define('ZIMBRA_URL', 'https://zimbraServerName');
 //    define('ZIMBRA_URL', 'http://127.0.0.1');  
-//    define('ZIMBRA_URL', 'https://127.0.0.1');  
+    define('ZIMBRA_URL', 'https://127.0.0.1');  
 
     // By default the zimbra backend does not enforce certificate validation for connections 
     // to zimbra as many people run zimbra FOSS using self-signed certificates. If verification 
@@ -162,7 +163,6 @@
     // line and change the value as appropriate. 
 //    define('ZIMBRA_LOCAL_CACHE_LIFETIME', 3600);
 
-
     // By default most devices send meeting invitation replies directly to the organizer in 
     // addition to responding to the server. When a response is sent to the server it can 
     // include a flag to tell the server to generate a response to the organizer on behalf of
@@ -172,6 +172,15 @@
     // replies. If your devices need the server to send replies for them then simply uncomment 
     // the next line and set it to true.
 //    define('ZIMBRA_SERVER_INVITE_REPLY', true);
+
+    // By default the zimbra client uses the Trash folder for deletions of mail messages,  
+    // tasks and contacts. This has always been the same in the ZimbraBackend for consistency.
+    // For those that would prefer to control the use of the Trash folder from their client a
+    // new setting ZIMBRA_DELETESASMOVES has been added that can be used to override the 
+    // default behaviour. The default for this setting is true which means it will move items 
+    // to the Trash folder when they are deleted on the client. To bypass the Trash folder and
+    // delete them immediately simply uncomment the next line and set it to false.
+//    define('ZIMBRA_DELETESASMOVES', true);
 
     // Some older android clients had issues with syncing birthdays which would result in 
     // constant contact sync loops and battery drain. A User Agent check was added to the code
