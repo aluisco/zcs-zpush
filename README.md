@@ -51,7 +51,7 @@ Backup and replace jetty.xml.in
 ```bash
 cp /opt/zimbra/jetty/etc/jetty.xml.in /opt/zimbra/jetty/etc/jetty.xml.in.backup
 cp jetty.xml.in-for-zcs-8815 /opt/zimbra/jetty/etc/jetty.xml.in
-chown zimbra.zimbra /opt/zimbra/jetty/etc/jetty.xml.in
+chown zimbra:zimbra /opt/zimbra/jetty/etc/jetty.xml.in
 ```
 
 ### For 9.0.0
@@ -59,7 +59,7 @@ chown zimbra.zimbra /opt/zimbra/jetty/etc/jetty.xml.in
 ```bash
 cp /opt/zimbra/jetty/etc/jetty.xml.in /opt/zimbra/jetty/etc/jetty.xml.in.backup
 cp jetty.xml.in-for-zcs-9 /opt/zimbra/jetty/etc/jetty.xml.in
-chown zimbra.zimbra /opt/zimbra/jetty/etc/jetty.xml.in
+chown zimbra:zimbra /opt/zimbra/jetty/etc/jetty.xml.in
 ```
 
 Replace php.ini
