@@ -6,29 +6,27 @@
  *
  * LICENSE:
  *
- * Copyright (c) 2001-2017, Chuck Hagenbuch & Richard Heyes
+ * Copyright (c) 2001-2010, Richard Heyes
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
  *
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
- *
- * 3. Neither the name of the copyright holder nor the names of its
- *    contributors may be used to endorse or promote products derived from
- *    this software without specific prior written permission.
+ * o Redistributions of source code must retain the above copyright
+ *   notice, this list of conditions and the following disclaimer.
+ * o Redistributions in binary form must reproduce the above copyright
+ *   notice, this list of conditions and the following disclaimer in the
+ *   documentation and/or other materials provided with the distribution.
+ * o The names of the authors may not be used to endorse or promote
+ *   products derived from this software without specific prior written
+ *   permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
  * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
  * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
  * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
  * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
@@ -40,9 +38,9 @@
  * @package     Mail
  * @author      Richard Heyes <richard@phpguru.org>
  * @author      Chuck Hagenbuch <chuck@horde.org
- * @copyright   2001-2017 Richard Heyes
- * @license     http://opensource.org/licenses/BSD-3-Clause New BSD License
- * @version     CVS: $Id$
+ * @copyright   2001-2010 Richard Heyes
+ * @license     http://opensource.org/licenses/bsd-license.php New BSD License
+ * @version     CVS: $Id: RFC822.php 294749 2010-02-08 08:22:25Z clockwerx $
  * @link        http://pear.php.net/package/Mail/
  */
 
@@ -179,7 +177,7 @@ class Mail_RFC822 {
 
         if (isset($address))        $this->address        = $address;
         // z-push addition
-        if (strlen(trim((string) $this->address)) == 0) return array();
+        if (strlen(trim($this->address)) == 0) return array();
         if (isset($default_domain)) $this->default_domain = $default_domain;
         if (isset($nest_groups))    $this->nestGroups     = $nest_groups;
         if (isset($validate))       $this->validate       = $validate;
@@ -244,7 +242,7 @@ class Mail_RFC822 {
         }
 
         // Split the string based on the above ten or so lines.
-        $parts  = explode($split_char, (string) $address);
+        $parts  = explode($split_char, $address);
         $string = $this->_splitCheck($parts, $split_char);
 
         // If a group...
@@ -276,7 +274,7 @@ class Mail_RFC822 {
 
         // Remove the now stored address from the initial line, the +1
         // is to account for the explode character.
-        $address = trim(substr((string) $address, strlen($string) + 1));
+        $address = trim(substr($address, strlen($string) + 1));
 
         // If the next char is a comma and this was a group, then
         // there are more addresses, otherwise, if there are any more
@@ -305,7 +303,7 @@ class Mail_RFC822 {
     protected function _isGroup($address)
     {
         // First comma not in quotes, angles or escaped:
-        $parts  = explode(',', (string) $address);
+        $parts  = explode(',', $address);
         $string = $this->_splitCheck($parts, ',');
 
         // Now we have the first address, we can reliably check for a
@@ -650,6 +648,11 @@ class Mail_RFC822 {
             $phrase     = trim($name);
             $route_addr = trim(substr($mailbox, strlen($name.'<'), -1));
 
+            //z-push fix for umlauts and other special chars
+            if (substr($phrase, 0, 1) != '"' && substr($phrase, -1) != '"') {
+                $phrase = '"'.$phrase.'"';
+            }
+
             if ($this->_validatePhrase($phrase) === false || ($route_addr = $this->_validateRouteAddr($route_addr)) === false) {
                 return false;
             }
@@ -817,7 +820,7 @@ class Mail_RFC822 {
      */
     protected function _validateDliteral($dliteral)
     {
-        return !preg_match('/(.)[][\x0D\\\\]/', $dliteral, $matches) && ((! isset($matches[1])) || $matches[1] != '\\');
+        return !preg_match('/(.)[][\x0D\\\\]/', $dliteral, $matches) && $matches[1] != '\\';
     }
 
     /**
@@ -900,7 +903,7 @@ class Mail_RFC822 {
      * @param  string $data Addresses to count
      * @return int          Approximate count
      */
-    public function approximateCount($data)
+    function approximateCount($data)
     {
         return count(preg_split('/(?<!\\\\),/', $data));
     }
@@ -918,7 +921,7 @@ class Mail_RFC822 {
      * @return mixed           False if it fails, an indexed array
      *                         username/domain if it matches
      */
-    public function isValidInetAddress($data, $strict = false)
+    function isValidInetAddress($data, $strict = false)
     {
         $regex = $strict ? '/^([.0-9a-z_+-]+)@(([0-9a-z-]+\.)+[0-9a-z]{2,})$/i' : '/^([*+!.&#$|\'\\%\/0-9a-z^_`{}=?~:-]+)@(([0-9a-z-]+\.)+[0-9a-z]{2,})$/i';
         if (preg_match($regex, trim($data), $matches)) {

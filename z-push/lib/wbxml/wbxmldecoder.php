@@ -165,9 +165,6 @@ class WBXMLDecoder extends WBXMLDefs {
     public function getElementStartTag($tag) {
         $element = $this->getToken();
 
-        if (!$element)
-            return false;
-
         if($element[EN_TYPE] == EN_TYPE_STARTTAG && $element[EN_TAG] == $tag)
             return $element;
         else {
@@ -288,7 +285,7 @@ class WBXMLDecoder extends WBXMLDefs {
         }
 
         $el = $this->_getToken();
-        if($this->log && $el)
+        if($this->log)
             $this->logToken($el);
 
         return $el;
