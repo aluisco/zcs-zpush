@@ -27,8 +27,11 @@
 //  BackendLDAP settings
 // **********************
 
-// LDAP server uri
-define("LDAP_SERVER_URI", "ldap://127.0.0.1:389/");
+// Server address
+define('LDAP_SERVER', 'localhost');
+
+// Server Port
+define('LDAP_SERVER_PORT', '389');
 
 // LDAP USER DN
 define('LDAP_USER_DN', 'uid=%u,ou=mailaccount,dc=phppush,dc=com');

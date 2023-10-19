@@ -1329,9 +1329,6 @@ class TimezoneUtil {
             //20110930 (Append T000000Z to the date, so it starts at midnight)
             $date = date_create_from_format('Ymd\THis\Z', $value . "T000000Z", $tz);
         }
-        if (!$date) {
-            ZLog::Write(LOGLEVEL_ERROR, sprintf("TimezoneUtil::MakeUTCDate(): failed to convert '%s' to date", $value));
-        }
         return date_timestamp_get($date);
     }
 
